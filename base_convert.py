@@ -12,6 +12,19 @@ DIGIT_MAP = {k:v for k,v in enumerate(ALL_DIGITS)}
 DIGIT_RMAP = {v:k for k,v in enumerate(ALL_DIGITS)}
 
 
+def handle_error(e):
+    pass
+
+
+def digit_error(digit, base):
+    """
+    Report an invalid digit in the given base.
+    """
+    message = '%s is not a valid digit in base %s.' % (digit, base)
+    handle_error(message)
+    raise ValueError(message)
+
+
 def convert(number, from_base=10, to_base=10, round_to=5):
     """
     Convert number between specified bases, rounding to round_to digits.
@@ -20,11 +33,14 @@ def convert(number, from_base=10, to_base=10, round_to=5):
         from_base, to_base, round_to = map(int, (from_base, to_base, round_to))
     except ValueError as v:
         offender = v.args[0].split(':')[1].lstrip()
-        sys.exit('Base and rounding arguments must be integers, '
-                 'not %s.' % offender)
+        handle_error('Base and rounding arguments must be integers, '
+                     'not %s.' % offender)
+        raise
     for base in (from_base, to_base):
         if not 1 < base <= len(ALL_DIGITS):
-            sys.exit('Unsupported base: %s' % base)
+            message = 'Unsupported base: %s' % base
+            handle_error(message)
+            raise ValueError(message)
     try:
         int_part, frac_part = str(number).split('.')
     except ValueError:
@@ -35,8 +51,13 @@ def convert(number, from_base=10, to_base=10, round_to=5):
             try:
                 int_part = int(int_part, from_base)
             except ValueError:
-                sys.exit('%s is not a valid number in '
-                         'base %s.' % (number, from_base))
+                integer = 0
+                for i, d in enumerate(int_part):
+                    d_value = DIGIT_RMAP[d]
+                    if d_value >= from_base:
+                        digit_error(d, from_base)
+                    integer += d_value * from_base ** (i+1)
+                int_part = integer
         else:
             int_part = 0
 
@@ -52,8 +73,7 @@ def convert(number, from_base=10, to_base=10, round_to=5):
     for i, d in enumerate(frac_part):
         d_value = DIGIT_RMAP[d]
         if d_value >= from_base:
-            sys.exit('%s is not a valid number in '
-                     'base %s.' % (number, from_base))
+            digit_error(d, from_base)
         fraction += d_value * from_base ** -(i+1)
     frac_digits = []
     product = fraction
@@ -67,6 +87,7 @@ def convert(number, from_base=10, to_base=10, round_to=5):
 
 
 if __name__ == '__main__':
+    handle_error = sys.exit
     try:
         sys.argv[1]
     except IndexError:
