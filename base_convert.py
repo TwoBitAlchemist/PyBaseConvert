@@ -52,7 +52,7 @@ def convert(number, from_base=10, to_base=10, round_to=5):
                 int_part = int(int_part, from_base)
             except ValueError:
                 integer = 0
-                for i, d in enumerate(int_part):
+                for i, d in enumerate(reversed(int_part)):
                     d_value = DIGIT_RMAP[d]
                     if d_value >= from_base:
                         digit_error(d, from_base)
