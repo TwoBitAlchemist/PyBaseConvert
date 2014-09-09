@@ -8,6 +8,8 @@ Installation
 
     git clone https://github.com/TwoBitAlchemist/PyBaseConvert
 
+Requires Python 2.6+ or Python 3.
+
 Usage
 -----
 
