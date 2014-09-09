@@ -8,8 +8,8 @@ from decimal import Decimal
 
 
 ALL_DIGITS = ''.join(map(str, range(10))) + string.ascii_letters + '+/'
-DIGIT_MAP = {k:v for k,v in enumerate(ALL_DIGITS)}
-DIGIT_RMAP = {v:k for k,v in enumerate(ALL_DIGITS)}
+DIGIT_MAP = dict(enumerate(ALL_DIGITS))
+DIGIT_RMAP = dict(zip(DIGIT_MAP.values(), DIGIT_MAP.keys()))
 
 
 def handle_error(e):
