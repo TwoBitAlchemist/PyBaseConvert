@@ -56,7 +56,7 @@ def convert(number, from_base=10, to_base=10, round_to=5):
                     d_value = DIGIT_RMAP[d]
                     if d_value >= from_base:
                         digit_error(d, from_base)
-                    integer += d_value * from_base ** (i+1)
+                    integer += d_value * from_base ** i
                 int_part = integer
         else:
             int_part = 0
