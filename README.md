@@ -52,3 +52,23 @@ Examples
     '.000110011'
     >>> base_convert.convert(-8, 10, 5)
     '-13'
+
+Warning About Notation
+----------------------
+
+This program uses the following notation for digits in every base (up to the
+amount of digits that base needs):
+
+  * `0-9` for the digits 0 through 9.
+  * `a-z` for the digits 10 through 35.
+  * `A-Z` for the digits 36 through 61.
+  * `+` and `/` for the digits 62 and 63.
+
+This may lead to unexpected results for users expecting conformity with
+accepted notations for certain commonly used bases. Specifically, this means
+that bases like hexadecimal are case sensitive and require lowercase letters
+(and that the program will complain that, e.g., `A` is not a valid hex digit).
+Likewise, there are several different implementations of base 64 with
+varying rules and inconsistencies with one another. If you need more
+standard behavior with respect to commonly used bases, please do not use this
+program in a production environment.
